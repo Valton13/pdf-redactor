@@ -1,0 +1,40 @@
+# render.yaml - Corrected for Render.com (2024)
+services:
+  - type: web
+    name: smart-redactor-api
+    env: python
+    region: frankfurt
+    plan: free
+    buildCommand: "pip install -r requirements_api.txt && python -m spacy download en_core_web_lg"
+    startCommand: "uvicorn python.api.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: REDIS_URL
+        sync: false
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    healthCheck:
+      path: /health
+      interval: 30
+
+  - type: worker
+    name: smart-redactor-worker
+    env: python
+    region: frankfurt
+    plan: free
+    buildCommand: "pip install -r requirements_api.txt"
+    startCommand: "celery -A python.worker.tasks worker --loglevel=info --concurrency=1"
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: REDIS_URL
+        sync: false
+      - key: PYTHONUNBUFFERED
+        value: "1"
+
+databases:
+  - type: redis
+    name: redaction-redis
+    plan: free
+    region: frankfurt
