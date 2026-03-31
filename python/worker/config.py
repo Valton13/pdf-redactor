@@ -2,7 +2,7 @@ import os
 UPSTASH_REDIS_URL = "immense-goshawk-66079.upstash.io"
 UPSTASH_REDIS_PASSWORD ="gQAAAAAAAQIfAAIncDJjZmE3Mjc4M2ZhNjM0ODA1YjYzOTdiZDRhZmM2ODg5MnAyNjYwNzk"
 
-REDIS_URL = f"rediss://default:{UPSTASH_REDIS_PASSWORD}@{UPSTASH_REDIS_URL}:6379?ssl_cert_reqs=CERT_NONE"
+REDIS_URL = f"rediss://default:{UPSTASH_REDIS_PASSWORD}@{UPSTASH_REDIS_URL}:6379?ssl_cert_reqs=CERT_REQUIRED"
 #REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 
 if os.getenv("ENVIRONMENT", "development") == "production":
